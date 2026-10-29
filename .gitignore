@@ -1,0 +1,37 @@
+# Terraform state
+**/.terraform/*
+*.tfstate
+*.tfstate.*
+crash.log
+crash.*.log
+
+# Secrets and local variables
+*.tfvars
+!*.tfvars.example
+*.tfplan
+*.auto.tfvars
+*.auto.tfvars.json
+
+# Terraform overrides
+override.tf
+override.tf.json
+*_override.tf
+*_override.tf.json
+
+# Local environment
+.env
+.env.*
+!.env.example
+
+# IDE
+.vscode/
+.idea/
+
+# Operating system
+.DS_Store
+Thumbs.db
+
+# Terraform saved plans
+tfplan
+*.tfplan
+*.tfplan.*

@@ -1,0 +1,39 @@
+#cloud-config
+package_update: true
+
+packages:
+  - python3
+
+write_files:
+  - path: /opt/test-server.py
+    permissions: '0644'
+    content: |
+      from http.server import BaseHTTPRequestHandler, HTTPServer
+
+      class Handler(BaseHTTPRequestHandler):
+          def do_GET(self):
+              self.send_response(200)
+              self.end_headers()
+              self.wfile.write(b"Azure Network Segmentation - Backend OK\n")
+
+      HTTPServer(("0.0.0.0", 8080), Handler).serve_forever()
+
+  - path: /etc/systemd/system/test-server.service
+    permissions: '0644'
+    content: |
+      [Unit]
+      Description=Network Segmentation Test Server
+      After=network.target
+
+      [Service]
+      Type=simple
+      ExecStart=/usr/bin/python3 /opt/test-server.py
+      Restart=always
+      User=nobody
+
+      [Install]
+      WantedBy=multi-user.target
+
+runcmd:
+  - systemctl daemon-reload
+  - systemctl enable --now test-server.service

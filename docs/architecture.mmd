@@ -1,0 +1,28 @@
+flowchart TB
+    TF["Terraform · Infrastructure as Code"]
+
+    subgraph RG["Azure Resource Group · East US"]
+        subgraph VNET["VNet · 10.10.0.0/16"]
+            subgraph FRONT["Frontend Subnet · 10.10.1.0/24"]
+                FE["Ubuntu VM<br/>10.10.1.4"]
+            end
+
+            subgraph BACK["Backend Subnet · 10.10.2.0/24"]
+                BE["Ubuntu VM<br/>10.10.2.4<br/>HTTP Service :8080"]
+                NSG["Backend NSG"]
+            end
+        end
+
+        NW["Azure Network Watcher"]
+    end
+
+    TF -.-> RG
+    FE -->|"TCP 8080 · ALLOW"| BE
+    FE -.->|"TCP 22 · DENY"| NSG
+    NSG -.->|"Inbound rules"| BE
+    NW -.->|"IP Flow Verify"| NSG
+
+    classDef allowed fill:#dcfce7,stroke:#16a34a,color:#166534
+    classDef security fill:#fee2e2,stroke:#dc2626,color:#991b1b
+    class BE allowed
+    class NSG security
