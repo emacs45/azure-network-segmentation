@@ -1,5 +1,4 @@
 locals {
-  vm_size = "Standard_B1s"
   vm_user = "azureuser"
 
   vms = {
@@ -32,7 +31,7 @@ resource "azurerm_linux_virtual_machine" "vm" {
   name                = "vm-${each.key}"
   resource_group_name = data.azurerm_resource_group.main.name
   location            = data.azurerm_resource_group.main.location
-  size                = local.vm_size
+  size                = var.vm_size
 
   admin_username                  = local.vm_user
   disable_password_authentication = true
@@ -43,7 +42,7 @@ resource "azurerm_linux_virtual_machine" "vm" {
 
   admin_ssh_key {
     username   = local.vm_user
-    public_key = file(pathexpand("~/.ssh/id_ed25519.pub"))
+    public_key = file(pathexpand(var.ssh_public_key_path))
   }
 
   os_disk {

@@ -3,14 +3,19 @@ variable "subscription_id" {
   type        = string
 }
 
-variable "location" {
-  description = "Azure region for the deployment"
+variable "resource_group_name" {
+  description = "Name of an existing Azure resource group"
   type        = string
-  default     = "eastus"
 }
 
-variable "resource_group_name" {
-  description = "Name of the existing resource group"
+variable "ssh_public_key_path" {
+  description = "Path to the SSH public key used for VM authentication"
   type        = string
-  default     = "AZ-104-M4B-9JPE0E45DT"
+  default     = "~/.ssh/id_ed25519.pub"
+}
+
+variable "vm_size" {
+  description = "Azure VM size"
+  type        = string
+  default     = "Standard_B1s"
 }
